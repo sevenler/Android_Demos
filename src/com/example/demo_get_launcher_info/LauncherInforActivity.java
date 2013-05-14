@@ -5,7 +5,9 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.util.Log;
@@ -53,10 +55,29 @@ public class LauncherInforActivity extends Activity {
 					+ temp.activityInfo.packageName + "    "
 					+ temp.activityInfo.name);
 			
-			value.append(String.format("{name:%s,isDefault:%s},", temp.activityInfo.name, 
-					(defaultLauncher == null) ? false : temp.activityInfo.name.equals(defaultLauncher.activityInfo.name)));
+			value.append(String.format("{name:%s,isDefault:%s,isSystem:%s},", temp.activityInfo.name, 
+					(defaultLauncher == null) ? false : temp.activityInfo.name.equals(defaultLauncher.activityInfo.name), checkIsSystemApp(temp, pm)));
 		}
 		return value.toString();
+	}
+	
+	/**
+	 * 判断应用是否为系统内置app
+	 * @param app
+	 * @param pm
+	 * @return
+	 */
+	private boolean checkIsSystemApp(ResolveInfo app,PackageManager pm){
+		if(app == null) return false;
+		try {
+			ApplicationInfo appInfo = pm.getApplicationInfo(app.activityInfo.packageName, PackageManager.GET_ACTIVITIES);
+			if ((appInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 1) {
+				return true;
+			}
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 }
