@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_onekey_wallpaper"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_gravity="center"
+    android:padding="1dp"
+    android:background="@android:color/darker_gray"
+    android:orientation="horizontal" >
+
+    <Button
+        android:id="@+id/show_toast"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:text="Show Toast"
+        android:textColor="#ffffff" />
+
+    <Button
+        android:id="@+id/show_dialog"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:textColor="#ffffff"
+        android:text="Show Dialog" />
+
+</LinearLayout>

@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.demo_get_launcher_info"
+    package="com.example.demo"
     android:versionCode="1"
     android:versionName="1.0" >
 
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="17" />
-    
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.example.demo_get_launcher_info.MainActivity"
+            android:name="com.example.demo.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,9 +23,30 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.demo_get_launcher_info.LauncherInforActivity"
+            android:name="com.example.demo.LauncherInforActivity"
             android:label="@string/app_name" >
         </activity>
+        <activity
+            android:name="com.example.demo.BoardcastActivity"
+            android:label="@string/app_name" >
+        </activity>
+
+        <receiver android:name="com.example.demo.MyWidgetProvider" >
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/widget_provider" />
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="ACTION_SHOW_DIALOG_IN_BOARDCAST" />
+                <action android:name="ACTION_SHOW_TOAST_IN_BOARDCAST" />
+            </intent-filter>
+        </receiver>
+        
+        <receiver android:name="com.example.demo.OneKeyBoardCastReceiver" >
+            <intent-filter>
+                <action android:name="ACTION_SHOW_DIALOG_IN_BOARDCAST" />
+                <action android:name="ACTION_SHOW_TOAST_IN_BOARDCAST" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

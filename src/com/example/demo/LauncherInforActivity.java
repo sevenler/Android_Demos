@@ -1,4 +1,4 @@
-package com.example.demo_get_launcher_info;
+package com.example.demo;
 
 import java.util.Collections;
 import java.util.List;

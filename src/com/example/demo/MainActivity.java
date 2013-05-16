@@ -1,4 +1,4 @@
-package com.example.demo_get_launcher_info;
+package com.example.demo;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,8 +15,10 @@ public class MainActivity extends Activity implements OnClickListener{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		Button direct_to_get_launcher_info = (Button)findViewById(R.id.direct_to_get_launcher_info);
-		direct_to_get_launcher_info.setOnClickListener(this);
+		Button directToGetLauncherInfo = (Button)findViewById(R.id.direct_to_get_launcher_info);
+		directToGetLauncherInfo.setOnClickListener(this);
+		Button boardcast = (Button)findViewById(R.id.boardcast);
+		boardcast.setOnClickListener(this);
 	}
 
 	@Override
@@ -27,12 +29,16 @@ public class MainActivity extends Activity implements OnClickListener{
 
 	@Override
 	public void onClick(View v) {
+		Intent intent = null;
 		switch(v.getId()){
 		case R.id.direct_to_get_launcher_info:
-			Intent intent = new Intent(this, LauncherInforActivity.class);
-			startActivity(intent);
+			intent = new Intent(this, LauncherInforActivity.class);
+			break;
+		case R.id.boardcast:
+			intent = new Intent(this, BoardcastActivity.class);
 			break;
 		}
+		if(intent != null) startActivity(intent);
 	}
 
 }
