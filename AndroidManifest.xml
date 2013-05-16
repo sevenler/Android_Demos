@@ -4,6 +4,9 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
+    <!-- 有了这条权限 就可以在service或者boardcast中弹出dialog -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"></uses-permission>
+    
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="17" />

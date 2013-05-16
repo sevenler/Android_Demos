@@ -4,10 +4,11 @@ import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.os.Handler;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 /**
@@ -26,7 +27,10 @@ public class OneKeyBoardCastReceiver extends BroadcastReceiver {
 		Log.i("OneKeyBoardCastReceiver", String.format("on Receive %s", action));
 		if (action.equals(OneKeyWallpaper.ACTION_SHOW_DIALOG_IN_BOARDCAST)) {
 			try{
-				confirmAction(context, "Dialog", "Can show Dialog in boardcast.", null);
+				//这样是可以显示出来。这样必须申请一条<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"></uses-permission>权限，在权限提示框中会提示该应用会在其它应用上面显示内容
+				confirmAction(context, "Dialog", "Can show Dialog in boardcast.", null, true);
+				//这样是显示不出来的，会提示WindowsBadTokenException
+				//confirmAction(context, "Dialog", "Can show Dialog in boardcast.", null, false);
 			}catch(Exception ex){
 				ex.printStackTrace();
 				String message = " Can't show dialog in boardcast.";
@@ -58,7 +62,7 @@ public class OneKeyBoardCastReceiver extends BroadcastReceiver {
 	}
 	
 	public static void confirmAction(Context context, String title,
-			String message, final Runnable action) {
+			String message, final Runnable action, boolean isSystemAlert) {
 		OnClickListener listener = new OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				switch (which) {
@@ -68,12 +72,12 @@ public class OneKeyBoardCastReceiver extends BroadcastReceiver {
 				}
 			}
 		};
-		new AlertDialog.Builder(context)
-				.setIcon(android.R.drawable.ic_dialog_alert).setTitle(title)
-				.setMessage(message)
+		AlertDialog dialog = new AlertDialog.Builder(context)
+				.setIcon(android.R.drawable.ic_dialog_alert).setTitle(title).setMessage(message)
 				.setPositiveButton(android.R.string.ok, listener)
-				.setNegativeButton(android.R.string.cancel, listener).create()
-				.show();
+				.setNegativeButton(android.R.string.cancel, listener).create();
+		if(isSystemAlert) dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+		dialog.show();
 	}
 }
 
