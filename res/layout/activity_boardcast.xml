@@ -26,4 +26,13 @@
         android:layout_marginTop="45dp"
         android:text="To show dialog in boardcast" />
 
+    <Button
+        android:id="@+id/set_wallpaper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/show_dialog"
+        android:layout_below="@+id/show_dialog"
+        android:layout_marginTop="54dp"
+        android:text="Send am boardcast to set wallpaper" />
+
 </RelativeLayout>

@@ -1,6 +1,8 @@
 
 package com.example.demo;
 
+import java.io.File;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,7 +21,7 @@ public class BoardcastActivity extends Activity {
 		showToast.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(OneKeyWallpaper.ACTION_SHOW_TOAST_IN_BOARDCAST);
+				Intent intent = new Intent(AlertInBoardcastReceiver.ACTION_SHOW_TOAST_IN_BOARDCAST);
 				sendBroadcast(intent);
 			}
 		});
@@ -28,8 +30,24 @@ public class BoardcastActivity extends Activity {
 		showDialog.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(OneKeyWallpaper.ACTION_SHOW_DIALOG_IN_BOARDCAST);
+				Intent intent = new Intent(AlertInBoardcastReceiver.ACTION_SHOW_DIALOG_IN_BOARDCAST);
 				sendBroadcast(intent);
+			}
+		});
+		
+		Button setWallpaper = (Button)findViewById(R.id.set_wallpaper);
+		setWallpaper.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				int repeat = 1;
+				String dir = "//sdcard//androidesk//onekeywallpapers";
+				File file = new File(dir);
+				String[] list = file.list();
+				for (int i = 0; i < repeat; i++) {
+					Intent intent = new Intent(SetWallpaperReveiver.ACTION_SET_WALLPAPER);
+					intent.putExtra(SetWallpaperReveiver.DATA_WALLPAPER,  dir + "/" +list[i]);
+					sendBroadcast(intent);
+				}
 			}
 		});
 

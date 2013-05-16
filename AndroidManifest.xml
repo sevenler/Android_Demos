@@ -6,6 +6,7 @@
 
     <!-- 有了这条权限 就可以在service或者boardcast中弹出dialog -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"></uses-permission>
+    <uses-permission android:name="android.permission.SET_WALLPAPER"></uses-permission>
     
     <uses-sdk
         android:minSdkVersion="8"
@@ -44,10 +45,16 @@
             </intent-filter>
         </receiver>
         
-        <receiver android:name="com.example.demo.OneKeyBoardCastReceiver" >
+        <receiver android:name="com.example.demo.AlertInBoardcastReceiver" android:exported="false">
             <intent-filter>
                 <action android:name="ACTION_SHOW_DIALOG_IN_BOARDCAST" />
                 <action android:name="ACTION_SHOW_TOAST_IN_BOARDCAST" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.example.demo.SetWallpaperReveiver" android:exported="false">
+            <intent-filter>
+                <action android:name="ACTION_TO_SET_WALLPAPER" />
+                <action android:name="ACTION_RANDOM_SET_WALLPAPER" />
             </intent-filter>
         </receiver>
     </application>

@@ -19,13 +19,16 @@ import android.widget.Toast;
  * @mail johnnyxyzw@gmail.com
  *
  */
-public class OneKeyBoardCastReceiver extends BroadcastReceiver {
-
+public class AlertInBoardcastReceiver extends BroadcastReceiver {
+	public static final String ACTION_SHOW_DIALOG_IN_BOARDCAST = "ACTION_SHOW_DIALOG_IN_BOARDCAST";
+	public static final String ACTION_SHOW_TOAST_IN_BOARDCAST = "ACTION_SHOW_TOAST_IN_BOARDCAST";
+	
+	public static final String TAG = "AlertInBoardcastReceiver";
 	@Override
 	public void onReceive(final Context context, Intent intent) {
 		final String action = intent.getAction();
-		Log.i("OneKeyBoardCastReceiver", String.format("on Receive %s", action));
-		if (action.equals(OneKeyWallpaper.ACTION_SHOW_DIALOG_IN_BOARDCAST)) {
+		Log.i(TAG, String.format("on Receive %s", action));
+		if (action.equals(ACTION_SHOW_DIALOG_IN_BOARDCAST)) {
 			try{
 				//这样是可以显示出来。这样必须申请一条<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"></uses-permission>权限，在权限提示框中会提示该应用会在其它应用上面显示内容
 				confirmAction(context, "Dialog", "Can show Dialog in boardcast.", null, true);
@@ -34,10 +37,10 @@ public class OneKeyBoardCastReceiver extends BroadcastReceiver {
 			}catch(Exception ex){
 				ex.printStackTrace();
 				String message = " Can't show dialog in boardcast.";
-				Log.i("OneKeyBoardCastReceiver", message);
+				Log.i(TAG, message);
 				Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
 			}
-		} else if (action.equals(OneKeyWallpaper.ACTION_SHOW_TOAST_IN_BOARDCAST)) {
+		} else if (action.equals(ACTION_SHOW_TOAST_IN_BOARDCAST)) {
 			Toast.makeText(context, action, Toast.LENGTH_SHORT).show();
 			
 			final Handler handler = new Handler();
@@ -79,9 +82,4 @@ public class OneKeyBoardCastReceiver extends BroadcastReceiver {
 		if(isSystemAlert) dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
 		dialog.show();
 	}
-}
-
-class OneKeyWallpaper {
-	public static final String ACTION_SHOW_DIALOG_IN_BOARDCAST = "ACTION_SHOW_DIALOG_IN_BOARDCAST";
-	public static final String ACTION_SHOW_TOAST_IN_BOARDCAST = "ACTION_SHOW_TOAST_IN_BOARDCAST";
 }
