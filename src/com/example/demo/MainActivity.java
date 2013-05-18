@@ -19,6 +19,8 @@ public class MainActivity extends Activity implements OnClickListener{
 		directToGetLauncherInfo.setOnClickListener(this);
 		Button boardcast = (Button)findViewById(R.id.boardcast);
 		boardcast.setOnClickListener(this);
+		Button media = (Button)findViewById(R.id.media);
+		media.setOnClickListener(this);
 	}
 
 	@Override
@@ -36,6 +38,9 @@ public class MainActivity extends Activity implements OnClickListener{
 			break;
 		case R.id.boardcast:
 			intent = new Intent(this, BoardcastActivity.class);
+			break;
+		case R.id.media:
+			intent = new Intent(this, MediaActivity.class);
 			break;
 		}
 		if(intent != null) startActivity(intent);

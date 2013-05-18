@@ -1,0 +1,65 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity" >
+
+    <Button
+        android:id="@+id/internal_images"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="34dp"
+        android:text="To get internal images" />
+
+    <Button
+        android:id="@+id/internal_vidios"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/internal_images"
+        android:layout_below="@+id/internal_images"
+        android:layout_marginTop="10dp"
+        android:text="To get internal vidios" />
+
+     <Button
+        android:id="@+id/internal_medias"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/internal_vidios"
+        android:layout_below="@+id/internal_vidios"
+        android:layout_marginTop="10dp"
+        android:text="To get internal medias" />
+     
+     <Button
+        android:id="@+id/all_images"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/internal_medias"
+        android:layout_below="@+id/internal_medias"
+        android:layout_marginTop="10dp"
+        android:text="To get all images" />
+     
+      <Button
+        android:id="@+id/all_vidios"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/all_images"
+        android:layout_below="@+id/all_images"
+        android:layout_marginTop="10dp"
+        android:text="To get all vidios" />
+      
+      <Button
+        android:id="@+id/external_folder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/all_vidios"
+        android:layout_below="@+id/all_vidios"
+        android:layout_marginTop="10dp"
+        android:text="To get external folder" />
+
+</RelativeLayout>

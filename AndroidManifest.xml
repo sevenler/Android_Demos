@@ -34,6 +34,10 @@
             android:name="com.example.demo.BoardcastActivity"
             android:label="@string/app_name" >
         </activity>
+        <activity
+            android:name="com.example.demo.MediaActivity"
+            android:label="@string/app_name" >
+        </activity>
 
         <receiver android:name="com.example.demo.MyWidgetProvider" >
             <meta-data android:name="android.appwidget.provider"
