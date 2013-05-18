@@ -19,7 +19,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.example.demo.MainActivity"
-            android:label="@string/app_name" >
+            android:label="com.example.demo.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,15 +28,15 @@
         </activity>
         <activity
             android:name="com.example.demo.LauncherInforActivity"
-            android:label="@string/app_name" >
+            android:label="com.example.demo.LauncherInforActivity" >
         </activity>
         <activity
             android:name="com.example.demo.BoardcastActivity"
-            android:label="@string/app_name" >
+            android:label="com.example.demo.BoardcastActivity" >
         </activity>
         <activity
             android:name="com.example.demo.MediaActivity"
-            android:label="@string/app_name" >
+            android:label="com.example.demo.MediaActivity" >
         </activity>
 
         <receiver android:name="com.example.demo.MyWidgetProvider" >

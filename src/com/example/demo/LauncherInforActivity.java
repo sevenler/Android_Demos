@@ -27,12 +27,6 @@ public class LauncherInforActivity extends Activity {
 		
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
-
 	private String getLauncherInfor() {
 		final PackageManager pm = getPackageManager();
 		Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
