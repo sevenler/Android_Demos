@@ -1,8 +1,10 @@
 package com.example.demo;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Random;
@@ -22,20 +24,7 @@ public class SetWallpaperReveiver extends BroadcastReceiver{
 	
 	public static final String DATA_WALLPAPER = "DATA_WALLPAPER";
 	
-	private SingleThreadWorker worker = new SingleThreadWorker(new GetterHandler());
-	private SingleWorkerCallback callback = new SingleWorkerCallback() {
-		@Override
-		public void load(Thread thread) {
-		}
-		
-		@Override
-		public void completed() {
-		}
-		
-		@Override
-		public void cancel(Thread thread) {
-		}
-	};
+	private static SingleThreadWorker worker = new SingleThreadWorker();
 	
 	@Override
 	public void onReceive(final Context context, Intent intent) {
@@ -49,29 +38,35 @@ public class SetWallpaperReveiver extends BroadcastReceiver{
 			Random random = new Random();
 			File file = new File(wallpaper);
 			String[] list = file.list();
+
 			int next = random.nextInt(list.length);
-			
 			setWallpaperWithNewThead(context, wallpaper + "/" + list[next]);
 		}
 	}
 	
 	private void setWallpaperWithNewThead(final Context context, final String wallpaper){
-		worker.setNewWork(callback, new Runnable() {
+		worker.setNewWork(new Runnable() {
 			@Override
 			public void run() {
 				try {
-					Log.i(TAG, String.format(" To set wallpaper %s ", wallpaper));
 					setWallpaper(context, wallpaper);
 				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+				final int sleep = 1000 * 20;
+				try {
+					Thread.sleep(sleep);
+				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			}
 		});
 	}
 	
-	private void setWallpaper(Context ctx, String file) throws IOException{
-		InputStream is = new FileInputStream(file);
-		BufferedInputStream bis = new BufferedInputStream(is);
+	private static void setWallpaper(Context ctx, String file) throws IOException{
+		byte[] bytes = getBytesFromFile(file);
+		InputStream bis = new ByteArrayInputStream(bytes);
 		final WallpaperManager wm = WallpaperManager.getInstance(ctx);
 		try{
 			wm.setStream(bis);
@@ -79,7 +74,24 @@ public class SetWallpaperReveiver extends BroadcastReceiver{
 			throw ex;
 		}finally{
 			bis.close();
-			is.close();
 		}
+	}
+	
+	private static byte[] getBytesFromFile(String path) throws IOException {
+		File file = new File(path);
+		int size = (int)file.length();
+		byte[] bytes = new byte[size];
+		BufferedInputStream buf = null;
+		try {
+			buf = new BufferedInputStream(new FileInputStream(file));
+			buf.read(bytes, 0, bytes.length);
+		} catch (FileNotFoundException e) {
+			throw e;
+		} catch (IOException e) {
+			throw e;
+		}finally{
+			if(buf != null) buf.close();
+		}
+		return bytes;
 	}
 }
