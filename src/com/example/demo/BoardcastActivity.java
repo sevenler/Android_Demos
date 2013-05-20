@@ -34,6 +34,15 @@ public class BoardcastActivity extends Activity {
 			}
 		});
 		
+		Button showDialogWithTransparentActivity = (Button)findViewById(R.id.show_dialog_with_transparent_activity);
+		showDialogWithTransparentActivity.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(AlertInBoardcastReceiver.ACTION_SHOW_DIALOG_WHIT_TRANSPRARANT_ACTIVITY_IN_BOARDCAST);
+				sendBroadcast(intent);
+			}
+		});
+		
 		Button setWallpaper = (Button)findViewById(R.id.set_wallpaper);
 		setWallpaper.setOnClickListener(new OnClickListener() {
 			@Override

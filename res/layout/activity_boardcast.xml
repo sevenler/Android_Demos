@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="34dp"
+        android:layout_marginTop="30dp"
         android:text="To show toast in boardcast" />
 
     <Button
@@ -23,16 +23,26 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/show_toast"
         android:layout_below="@+id/show_toast"
-        android:layout_marginTop="45dp"
+        android:layout_marginTop="30dp"
         android:text="To show dialog in boardcast" />
+
+    <Button
+        android:id="@+id/show_dialog_with_transparent_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/show_dialog"
+        android:layout_below="@+id/show_dialog"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="30dp"
+        android:text="To show dialog with transparent activity" />
 
     <Button
         android:id="@+id/set_wallpaper"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/show_dialog"
-        android:layout_below="@+id/show_dialog"
-        android:layout_marginTop="54dp"
+        android:layout_alignLeft="@+id/show_dialog_with_transparent_activity"
+        android:layout_below="@+id/show_dialog_with_transparent_activity"
+        android:layout_marginTop="30dp"
         android:text="Send am boardcast to set wallpaper" />
 
 </RelativeLayout>
