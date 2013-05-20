@@ -63,16 +63,16 @@ public class MediaListGetter {
 		// 内置存储的图片
 		Uri baseUri = INTERNAL_STORAGE_URI;
 		Uri uri = baseUri.buildUpon().appendQueryParameter("distinct", "true").build();
-		Cursor internal = Media.query(mContentResolver, uri, new String[] {
-				Media.BUCKET_DISPLAY_NAME, Media.BUCKET_ID }, whereClause(CAMERA_IMAGE_BUCKET_ID),
-				whereClauseArgs(CAMERA_IMAGE_BUCKET_ID), null);
+		Cursor internal = Media.query(mContentResolver, INTERNAL_STORAGE_URI, new String[] {
+				Media.BUCKET_DISPLAY_NAME, Media.BUCKET_ID }, whereClause(null),
+				whereClauseArgs(null), null);
 
 		// 外置存储的图片
 		baseUri = EXTERNAL_STORAGE_URI;
 		uri = baseUri.buildUpon().appendQueryParameter("distinct", "true").build();
-		Cursor external = Media.query(mContentResolver, uri, new String[] {
-				Media.BUCKET_DISPLAY_NAME, Media.BUCKET_ID }, whereClause(CAMERA_IMAGE_BUCKET_ID),
-				whereClauseArgs(CAMERA_IMAGE_BUCKET_ID), null);
+		Cursor external = Media.query(mContentResolver, EXTERNAL_STORAGE_URI, new String[] {
+				Media.BUCKET_DISPLAY_NAME, Media.BUCKET_ID }, whereClause(null),
+				whereClauseArgs(null), null);
 
 		try {
 			HashMap<String, String> hash = new HashMap<String, String>();
