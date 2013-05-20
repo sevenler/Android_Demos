@@ -32,7 +32,6 @@ public class MyWidgetProvider extends AppWidgetProvider {
 		Intent randomWallpaper = new Intent(SetWallpaperReveiver.ACTION_RANDOM_SET_WALLPAPER);
 		String dir = new File(Environment.getExternalStorageDirectory(), "androidesk/wallpapers")
 				.toString();
-		System.out.println(String.format("dir:  %s", dir));
 		randomWallpaper.putExtra(SetWallpaperReveiver.DATA_WALLPAPER, dir);
 		PendingIntent setWallpaperPending = PendingIntent.getBroadcast(context, 0, randomWallpaper, 0);
 		remoteViews.setOnClickPendingIntent(R.id.set_wallpaper, setWallpaperPending);

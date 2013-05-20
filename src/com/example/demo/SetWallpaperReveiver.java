@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadFactory;
@@ -19,6 +20,8 @@ import android.app.WallpaperManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.provider.MediaStore;
 import android.util.Log;
 
 public class SetWallpaperReveiver extends BroadcastReceiver {
@@ -52,11 +55,24 @@ public class SetWallpaperReveiver extends BroadcastReceiver {
 		if (ACTION_SET_WALLPAPER.equals(action)) {
 			setWallpaperWithNewThead(context, wallpaper);
 		} else if (ACTION_RANDOM_SET_WALLPAPER.equals(action)) {
-			setWallpaperWithNewThead(context, randomWallpaper(wallpaper));
+			String[] dirs = new String[1];
+			dirs[0] = wallpaper;
+
+			// 实践证明Media数据库操作时间是FileFilter操作的时间的一半
+			long time = System.currentTimeMillis();
+			randomWallpaperFilterMediaStore(context, dirs);
+			long time1 = System.currentTimeMillis();
+			Log.i(TAG, String.format(" filter Media Store duration:%s ", time1 - time));
+			time = System.currentTimeMillis();
+			randomWallpaperFilterFile(dirs);
+			time1 = System.currentTimeMillis();
+			Log.i(TAG, String.format(" filter File duration:%s ", time1 - time));
+
+			setWallpaperWithNewThead(context, randomWallpaperFilterMediaStore(context, dirs));
 		}
 	}
 
-	private String randomWallpaper(String dir) {
+	private String randomWallpaperFilterFile(String dir) {
 		Random random = new Random();
 		File file = new File(dir);
 		if (!file.exists()) return null;
@@ -73,6 +89,30 @@ public class SetWallpaperReveiver extends BroadcastReceiver {
 		int next = random.nextInt(list.length);
 		String value = dir + "/" + list[next];
 		return value;
+	}
+
+	private String randomWallpaperFilterFile(String[] dirs) {
+		Random random = new Random();
+		int size = dirs.length;
+		if (size == 0) return null;
+		int index = random.nextInt(size);
+		return randomWallpaperFilterFile(dirs[index]);
+	}
+
+	private String randomWallpaperFilterMediaStore(Context ctx, String dir) {
+		Random random = new Random();
+		String[] files = getImagesByDir(ctx, dir);
+		int next = random.nextInt(files.length);
+		String value = files[next];
+		return value;
+	}
+	
+	private String randomWallpaperFilterMediaStore(Context ctx, String[] dirs) {
+		Random random = new Random();
+		int size = dirs.length;
+		if (size == 0) return null;
+		int index = random.nextInt(size);
+		return randomWallpaperFilterMediaStore(ctx, dirs[index]);
 	}
 
 	private void setWallpaperWithNewThead(final Context context, final String wallpaper) {
@@ -124,5 +164,25 @@ public class SetWallpaperReveiver extends BroadcastReceiver {
 			if (buf != null) buf.close();
 		}
 		return bytes;
+	}
+
+	private static String[] getImagesByDir(Context context, String dir) {
+		try {
+			String[] projection = { MediaStore.Images.Media._ID, MediaStore.Images.Media.DATA,
+					MediaStore.Images.Media.ORIENTATION };
+			String where = MediaStore.Images.Media.BUCKET_ID
+					+ String.format("= '%s'", dir.toLowerCase(Locale.getDefault()).hashCode());
+			Cursor cursor = MediaStore.Images.Media.query(context.getContentResolver(),
+					MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, where,
+					MediaStore.Images.Media.DATE_ADDED + " desc");
+			String[] results = new String[cursor.getCount()];
+			for (int i = 0; cursor.moveToNext(); i++) {
+				results[i] = cursor.getString(1);
+			}
+			return results;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
