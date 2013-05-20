@@ -28,10 +28,10 @@ public class SetWallpaperReveiver extends BroadcastReceiver {
 	public static final String TAG = "SetWallpaperReveiver";
 
 	public static final String ACTION_SET_WALLPAPER = "ACTION_TO_SET_WALLPAPER";
-
 	public static final String ACTION_RANDOM_SET_WALLPAPER = "ACTION_RANDOM_SET_WALLPAPER";
-
 	public static final String DATA_WALLPAPER = "DATA_WALLPAPER";
+
+	public static final String SAVED_NEXT_WALLPAPER = "SAVED_NEXT_WALLPAPER";
 
 	/**
 	 * 单线程工作，溢出时，删除老的线程
@@ -53,69 +53,29 @@ public class SetWallpaperReveiver extends BroadcastReceiver {
 
 		Log.i(TAG, String.format("on Receive action:%s wallpaper:%s", action, wallpaper));
 		if (ACTION_SET_WALLPAPER.equals(action)) {
-			setWallpaperWithNewThead(context, wallpaper);
+			setWallpaperWithNewThead(context, wallpaper, null);
 		} else if (ACTION_RANDOM_SET_WALLPAPER.equals(action)) {
 			String[] dirs = new String[1];
 			dirs[0] = wallpaper;
 
 			// 实践证明Media数据库操作时间是FileFilter操作的时间的一半
-			long time = System.currentTimeMillis();
-			randomWallpaperFilterMediaStore(context, dirs);
-			long time1 = System.currentTimeMillis();
-			Log.i(TAG, String.format(" filter Media Store duration:%s ", time1 - time));
-			time = System.currentTimeMillis();
-			randomWallpaperFilterFile(dirs);
-			time1 = System.currentTimeMillis();
-			Log.i(TAG, String.format(" filter File duration:%s ", time1 - time));
+			// long time = System.currentTimeMillis();
+			// Util.randomWallpaperFilterMediaStore(context, dirs);
+			// long time1 = System.currentTimeMillis();
+			// Log.i(TAG, String.format(" filter Media Store duration:%s ",
+			// time1 - time));
+			// time = System.currentTimeMillis();
+			// Util.randomWallpaperFilterFile(dirs);
+			// time1 = System.currentTimeMillis();
+			// Log.i(TAG, String.format(" filter File duration:%s ", time1 -
+			// time));
 
-			setWallpaperWithNewThead(context, randomWallpaperFilterMediaStore(context, dirs));
+			setWallpaperWithNewThead(context, generateOrLoadWallpaper(context, dirs), dirs);
 		}
 	}
 
-	private String randomWallpaperFilterFile(String dir) {
-		Random random = new Random();
-		File file = new File(dir);
-		if (!file.exists()) return null;
-
-		FilenameFilter filter = new FilenameFilter() {
-			@Override
-			public boolean accept(File dir, String filename) {
-				return filename.endsWith(".jpg");
-			}
-		};
-		String[] list = file.list(filter);
-
-		if (list.length == 0) return null;
-		int next = random.nextInt(list.length);
-		String value = dir + "/" + list[next];
-		return value;
-	}
-
-	private String randomWallpaperFilterFile(String[] dirs) {
-		Random random = new Random();
-		int size = dirs.length;
-		if (size == 0) return null;
-		int index = random.nextInt(size);
-		return randomWallpaperFilterFile(dirs[index]);
-	}
-
-	private String randomWallpaperFilterMediaStore(Context ctx, String dir) {
-		Random random = new Random();
-		String[] files = getImagesByDir(ctx, dir);
-		int next = random.nextInt(files.length);
-		String value = files[next];
-		return value;
-	}
-	
-	private String randomWallpaperFilterMediaStore(Context ctx, String[] dirs) {
-		Random random = new Random();
-		int size = dirs.length;
-		if (size == 0) return null;
-		int index = random.nextInt(size);
-		return randomWallpaperFilterMediaStore(ctx, dirs[index]);
-	}
-
-	private void setWallpaperWithNewThead(final Context context, final String wallpaper) {
+	private void setWallpaperWithNewThead(final Context context, final String wallpaper,
+			final String[] dir) {
 		if (wallpaper == null) {
 			Log.i(TAG, String.format(" seting wallpaper is null ", wallpaper));
 			return;
@@ -129,8 +89,23 @@ public class SetWallpaperReveiver extends BroadcastReceiver {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+
+				if (dir != null) generateNextWallpaperAndSave(context, dir);
 			}
 		});
+	}
+
+	private String generateOrLoadWallpaper(Context ctx, String[] dirs) {
+		PrefManager pref = PrefManager.getInstance();
+		String saved = pref.getStringFromPrefs(ctx, SAVED_NEXT_WALLPAPER, null);
+		if (saved == null) saved = Util.randomWallpaperFilterMediaStore(ctx, dirs);
+		return saved;
+	}
+
+	private void generateNextWallpaperAndSave(Context ctx, String[] dirs) {
+		String next = Util.randomWallpaperFilterMediaStore(ctx, dirs);
+		PrefManager pref = PrefManager.getInstance();
+		pref.setStringToPrefs(ctx, SAVED_NEXT_WALLPAPER, next);
 	}
 
 	private static void setWallpaper(Context ctx, String file) throws IOException {
@@ -165,7 +140,9 @@ public class SetWallpaperReveiver extends BroadcastReceiver {
 		}
 		return bytes;
 	}
+}
 
+class Util {
 	private static String[] getImagesByDir(Context context, String dir) {
 		try {
 			String[] projection = { MediaStore.Images.Media._ID, MediaStore.Images.Media.DATA,
@@ -184,5 +161,48 @@ public class SetWallpaperReveiver extends BroadcastReceiver {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public static String randomWallpaperFilterFile(String dir) {
+		Random random = new Random();
+		File file = new File(dir);
+		if (!file.exists()) return null;
+
+		FilenameFilter filter = new FilenameFilter() {
+			@Override
+			public boolean accept(File dir, String filename) {
+				return filename.endsWith(".jpg");
+			}
+		};
+		String[] list = file.list(filter);
+
+		if (list.length == 0) return null;
+		int next = random.nextInt(list.length);
+		String value = dir + "/" + list[next];
+		return value;
+	}
+
+	public static String randomWallpaperFilterFile(String[] dirs) {
+		Random random = new Random();
+		int size = dirs.length;
+		if (size == 0) return null;
+		int index = random.nextInt(size);
+		return randomWallpaperFilterFile(dirs[index]);
+	}
+
+	public static String randomWallpaperFilterMediaStore(Context ctx, String dir) {
+		Random random = new Random();
+		String[] files = getImagesByDir(ctx, dir);
+		int next = random.nextInt(files.length);
+		String value = files[next];
+		return value;
+	}
+
+	public static String randomWallpaperFilterMediaStore(Context ctx, String[] dirs) {
+		Random random = new Random();
+		int size = dirs.length;
+		if (size == 0) return null;
+		int index = random.nextInt(size);
+		return randomWallpaperFilterMediaStore(ctx, dirs[index]);
 	}
 }
