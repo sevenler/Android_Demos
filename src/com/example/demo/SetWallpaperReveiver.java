@@ -6,6 +6,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Random;
@@ -32,8 +33,8 @@ public class SetWallpaperReveiver extends BroadcastReceiver {
 	/**
 	 * 单线程工作，溢出时，删除老的线程
 	 */
-	private static ThreadPoolExecutor worker = new ThreadPoolExecutor(1, 2, 10, TimeUnit.MILLISECONDS,
-			new ArrayBlockingQueue<Runnable>(1), new ThreadFactory() {
+	private static ThreadPoolExecutor worker = new ThreadPoolExecutor(1, 2, 10,
+			TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(1), new ThreadFactory() {
 				@Override
 				public Thread newThread(Runnable r) {
 					Thread t = new Thread(r);
@@ -51,16 +52,35 @@ public class SetWallpaperReveiver extends BroadcastReceiver {
 		if (ACTION_SET_WALLPAPER.equals(action)) {
 			setWallpaperWithNewThead(context, wallpaper);
 		} else if (ACTION_RANDOM_SET_WALLPAPER.equals(action)) {
-			Random random = new Random();
-			File file = new File(wallpaper);
-			String[] list = file.list();
-
-			int next = random.nextInt(list.length);
-			setWallpaperWithNewThead(context, wallpaper + "/" + list[next]);
+			setWallpaperWithNewThead(context, randomWallpaper(wallpaper));
 		}
 	}
 
+	private String randomWallpaper(String dir) {
+		Random random = new Random();
+		File file = new File(dir);
+		if (!file.exists()) return null;
+
+		FilenameFilter filter = new FilenameFilter() {
+			@Override
+			public boolean accept(File dir, String filename) {
+				return filename.endsWith(".jpg");
+			}
+		};
+		String[] list = file.list(filter);
+
+		if (list.length == 0) return null;
+		int next = random.nextInt(list.length);
+		String value = dir + "/" + list[next];
+		return value;
+	}
+
 	private void setWallpaperWithNewThead(final Context context, final String wallpaper) {
+		if (wallpaper == null) {
+			Log.i(TAG, String.format(" seting wallpaper is null ", wallpaper));
+			return;
+		}
+
 		worker.submit(new Runnable() {
 			@Override
 			public void run() {
@@ -69,20 +89,13 @@ public class SetWallpaperReveiver extends BroadcastReceiver {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-
-				System.out.println(String.format("setting wallpaper: %s", wallpaper));
-				final int sleep = 1000 * 2;
-				try {
-					Thread.sleep(sleep);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
 			}
 		});
 	}
 
 	private static void setWallpaper(Context ctx, String file) throws IOException {
 		byte[] bytes = getBytesFromFile(file);
+
 		InputStream bis = new ByteArrayInputStream(bytes);
 		final WallpaperManager wm = WallpaperManager.getInstance(ctx);
 		try {
@@ -99,6 +112,7 @@ public class SetWallpaperReveiver extends BroadcastReceiver {
 		int size = (int)file.length();
 		byte[] bytes = new byte[size];
 		BufferedInputStream buf = null;
+
 		try {
 			buf = new BufferedInputStream(new FileInputStream(file));
 			buf.read(bytes, 0, bytes.length);
@@ -107,8 +121,7 @@ public class SetWallpaperReveiver extends BroadcastReceiver {
 		} catch (IOException e) {
 			throw e;
 		} finally {
-			if (buf != null)
-				buf.close();
+			if (buf != null) buf.close();
 		}
 		return bytes;
 	}
