@@ -9,9 +9,11 @@
     </uses-permission>
     <uses-permission android:name="android.permission.SET_WALLPAPER" >
     </uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" >
+    </uses-permission>
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="14"
         android:targetSdkVersion="17" />
 
     <application
@@ -39,6 +41,10 @@
         <activity
             android:name="com.example.demo.MediaActivity"
             android:label="com.example.demo.MediaActivity" >
+        </activity>
+        <activity
+            android:name="com.example.demo.VolleyActivity"
+            android:label="com.example.demo.VolleyActivity" >
         </activity>
         <activity
             android:name="com.example.demo.TransparentActivity"

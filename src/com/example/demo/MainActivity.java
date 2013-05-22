@@ -20,6 +20,8 @@ public class MainActivity extends Activity implements OnClickListener{
 		boardcast.setOnClickListener(this);
 		Button media = (Button)findViewById(R.id.media);
 		media.setOnClickListener(this);
+		Button volley = (Button)findViewById(R.id.volley);
+		volley.setOnClickListener(this);
 	}
 
 	@Override
@@ -34,6 +36,9 @@ public class MainActivity extends Activity implements OnClickListener{
 			break;
 		case R.id.media:
 			intent = new Intent(this, MediaActivity.class);
+			break;
+		case R.id.volley:
+			intent = new Intent(this, VolleyActivity.class);
 			break;
 		}
 		if(intent != null) startActivity(intent);

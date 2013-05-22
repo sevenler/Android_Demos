@@ -26,5 +26,13 @@
         android:layout_alignLeft="@+id/boardcast"
         android:layout_below="@+id/boardcast"
         android:text="About Media" />
+    
+    <Button
+        android:id="@+id/volley"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/media"
+        android:layout_below="@+id/media"
+        android:text="About volley" />
 
 </RelativeLayout>
