@@ -47,6 +47,10 @@
             android:label="com.example.demo.VolleyActivity" >
         </activity>
         <activity
+            android:name="com.example.demo.DecodeImageActivity"
+            android:label="com.example.demo.DecodeImageActivity" >
+        </activity>
+        <activity
             android:name="com.example.demo.TransparentActivity"
             android:finishOnCloseSystemDialogs="true"
             android:label="com.example.demo.TransparentActivity"

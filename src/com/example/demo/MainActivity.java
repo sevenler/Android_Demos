@@ -22,6 +22,8 @@ public class MainActivity extends Activity implements OnClickListener{
 		media.setOnClickListener(this);
 		Button volley = (Button)findViewById(R.id.volley);
 		volley.setOnClickListener(this);
+		Button decode = (Button)findViewById(R.id.decode);
+		decode.setOnClickListener(this);
 	}
 
 	@Override
@@ -39,6 +41,9 @@ public class MainActivity extends Activity implements OnClickListener{
 			break;
 		case R.id.volley:
 			intent = new Intent(this, VolleyActivity.class);
+			break;
+		case R.id.decode:
+			intent = new Intent(this, DecodeImageActivity.class);
 			break;
 		}
 		if(intent != null) startActivity(intent);
