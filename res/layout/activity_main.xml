@@ -42,5 +42,13 @@
         android:layout_alignLeft="@+id/volley"
         android:layout_below="@+id/volley"
         android:text="Decode Image form url" />
+    
+    <Button
+        android:id="@+id/display"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/decode"
+        android:layout_below="@+id/decode"
+        android:text="Get display paramters" />
 
 </RelativeLayout>

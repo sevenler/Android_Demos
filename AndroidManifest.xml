@@ -51,6 +51,10 @@
             android:label="com.example.demo.DecodeImageActivity" >
         </activity>
         <activity
+            android:name="com.example.demo.DisplayActivity"
+            android:label="com.example.demo.DisplayActivity" >
+        </activity>
+        <activity
             android:name="com.example.demo.TransparentActivity"
             android:finishOnCloseSystemDialogs="true"
             android:label="com.example.demo.TransparentActivity"
