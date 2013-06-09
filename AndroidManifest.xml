@@ -55,6 +55,10 @@
             android:label="com.example.demo.DisplayActivity" >
         </activity>
         <activity
+            android:name="com.example.demo.AlloyPhotoActivity"
+            android:label="com.example.demo.AlloyPhotoActivity" >
+        </activity>
+        <activity
             android:name="com.example.demo.TransparentActivity"
             android:finishOnCloseSystemDialogs="true"
             android:label="com.example.demo.TransparentActivity"

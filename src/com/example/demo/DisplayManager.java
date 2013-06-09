@@ -10,10 +10,12 @@ public class DisplayManager {
 	private static DisplayManager instance = null;
 	private int displayWidth = 0;
 	private int displayHeight = 0;
-	private int densityDpi = 0;
 
 	private int desiredWidth = 0;
 	private int desiredHeight = 0;
+	
+	private int densityDpi = 0;
+	private float density = 0;
 
 	private DisplayMetrics dm = null;
 
@@ -33,9 +35,10 @@ public class DisplayManager {
 
 	@Override
 	public String toString() {
-		return "DisplayManager [displayWidth=" + displayWidth + ", displayHeight=" + displayHeight
-				+ ", densityDpi=" + densityDpi + ", desiredWidth=" + desiredWidth
-				+ ", desiredHeight=" + desiredHeight + ", dm=" + dm + "]";
+		return "displayWidth=" + displayWidth + ", displayHeight=" + displayHeight
+				+ ", desiredWidth=" + desiredWidth + ", desiredHeight=" + desiredHeight
+				+ ", densityDpi=" + densityDpi + ", density=" + density
+				+ ", displayWidth=" + displayWidth / density + "dp, displayHeight=" + displayHeight  / density + "dp";
 	}
 
 	public DisplayManager initialize(Context context) {
@@ -47,6 +50,7 @@ public class DisplayManager {
 			displayWidth = dm.widthPixels;
 			displayHeight = dm.heightPixels;
 			densityDpi = dm.densityDpi;
+			density = dm.density;
 		} catch (Exception e) {
 		}
 		try {

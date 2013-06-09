@@ -26,6 +26,8 @@ public class MainActivity extends Activity implements OnClickListener{
 		decode.setOnClickListener(this);
 		Button display = (Button)findViewById(R.id.display);
 		display.setOnClickListener(this);
+		Button alloyPhoto = (Button)findViewById(R.id.alloy_photo);
+		alloyPhoto.setOnClickListener(this);
 	}
 
 	@Override
@@ -49,6 +51,9 @@ public class MainActivity extends Activity implements OnClickListener{
 			break;
 		case R.id.display:
 			intent = new Intent(this, DisplayActivity.class);
+			break;
+		case R.id.alloy_photo:
+			intent = new Intent(this, AlloyPhotoActivity.class);
 			break;
 		}
 		if(intent != null) startActivity(intent);

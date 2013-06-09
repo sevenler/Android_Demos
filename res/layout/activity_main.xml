@@ -50,5 +50,13 @@
         android:layout_alignLeft="@+id/decode"
         android:layout_below="@+id/decode"
         android:text="Get display paramters" />
+    
+    <Button
+        android:id="@+id/alloy_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/display"
+        android:layout_below="@+id/display"
+        android:text="Alloy photo" />
 
 </RelativeLayout>
