@@ -13,7 +13,7 @@
     </uses-permission>
 
     <uses-sdk
-        android:minSdkVersion="14"
+        android:minSdkVersion="7"
         android:targetSdkVersion="17" />
 
     <application

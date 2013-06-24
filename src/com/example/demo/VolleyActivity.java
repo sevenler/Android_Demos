@@ -93,7 +93,7 @@ public class VolleyActivity extends Activity {
 
 	}
 
-	public static final String URL_FORMAT = "http://app.image.baidu.com/timg?list&appname=wallpaper&channelid=1426h&size=f400_400&quality=60&sec=1355561804&di=7EA1E08E71FF1A1FA058CDF57BBCFB65&src=%s";
+	public static final String URL_FORMAT = "http://app.image.baidu.com/timg?list&appname=wallpaper&channelid=1426h&size=f1000_1000&quality=60&sec=1355561804&di=7EA1E08E71FF1A1FA058CDF57BBCFB65&src=%s";
 	public static final String[] images = { "http://t2.baidu.com/it/u=306470869,1694571770&fm=17",
 			"http://i3.baidu.com/it/u=3742918946,1731708307&fm=17",
 			"http://i2.baidu.com/it/u=3792093916,1109408528&fm=17",
