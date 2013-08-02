@@ -59,4 +59,11 @@
         android:layout_below="@+id/display"
         android:text="Alloy photo" />
 
+    <Button
+        android:id="@+id/kill_background"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/alloy_photo"
+        android:layout_below="@+id/alloy_photo"
+        android:text="Kill background process" />
 </RelativeLayout>

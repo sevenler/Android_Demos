@@ -28,6 +28,8 @@ public class MainActivity extends Activity implements OnClickListener{
 		display.setOnClickListener(this);
 		Button alloyPhoto = (Button)findViewById(R.id.alloy_photo);
 		alloyPhoto.setOnClickListener(this);
+		Button killBackground = (Button)findViewById(R.id.kill_background);
+		killBackground.setOnClickListener(this);
 	}
 
 	@Override
@@ -54,6 +56,9 @@ public class MainActivity extends Activity implements OnClickListener{
 			break;
 		case R.id.alloy_photo:
 			intent = new Intent(this, AlloyPhotoActivity.class);
+			break;
+		case R.id.kill_background:
+			intent = new Intent(this, ClearBackgroundActivity.class);
 			break;
 		}
 		if(intent != null) startActivity(intent);
